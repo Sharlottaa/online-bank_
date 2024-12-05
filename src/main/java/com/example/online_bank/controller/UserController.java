@@ -1,66 +1,59 @@
 package com.example.online_bank.controller;
-import com.example.online_bank.dto.PaymentAccountDTO;
-import com.example.online_bank.service.PaymentAccountService;
+
+import com.example.online_bank.dto.UserDTO;
+import com.example.online_bank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/payment-accounts")
-public class PaymentAccountController {
+@RequestMapping("/api/users")
+public class UserController {
 
-    private final PaymentAccountService paymentAccountService;
+    private final UserService userService;
 
     @Autowired
-    public PaymentAccountController(PaymentAccountService paymentAccountService) {
-        this.paymentAccountService = paymentAccountService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    /**
-     * Создание нового платежного счета
-     */
-    @PostMapping
-    public ResponseEntity<PaymentAccountDTO> createPaymentAccount(@RequestBody PaymentAccountDTO paymentAccountDTO) {
-        PaymentAccountDTO createdPaymentAccount = paymentAccountService.createPaymentAccount(paymentAccountDTO);
-        return new ResponseEntity<>(createdPaymentAccount, HttpStatus.CREATED);
-    }
-
-    /**
-     * Получение платежного счета по ID
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<PaymentAccountDTO> getPaymentAccountById(@PathVariable Long id) {
-        PaymentAccountDTO paymentAccountDTO = paymentAccountService.getPaymentAccountById(id);
-        return ResponseEntity.ok(paymentAccountDTO);
-    }
-
-    /**
-     * Получение списка всех платежных счетов
-     */
+    // Получить список всех пользователей
     @GetMapping
-    public ResponseEntity<List<PaymentAccountDTO>> getAllPaymentAccounts() {
-        List<PaymentAccountDTO> paymentAccounts = paymentAccountService.getAllPaymentAccounts();
-        return ResponseEntity.ok(paymentAccounts);
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    /**
-     * Обновление платежного счета по ID
-     */
+    // Получить пользователя по ID
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<UserDTO> user = userService.getUserById(id);
+        return user.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    // Создать нового пользователя
+    @PostMapping
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    // Обновить пользователя
     @PutMapping("/{id}")
-    public ResponseEntity<PaymentAccountDTO> updatePaymentAccount(@PathVariable Long id, @RequestBody PaymentAccountDTO paymentAccountDTO) {
-        PaymentAccountDTO updatedPaymentAccount = paymentAccountService.updatePaymentAccount(id, paymentAccountDTO);
-        return ResponseEntity.ok(updatedPaymentAccount);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = userService.updateUser(id, userDTO);
+        return ResponseEntity.ok(updatedUser);
     }
 
-    /**
-     * Удаление платежного счета по ID
-     */
+    // Удалить пользователя
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePaymentAccount(@PathVariable Long id) {
-        paymentAccountService.deletePaymentAccount(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }

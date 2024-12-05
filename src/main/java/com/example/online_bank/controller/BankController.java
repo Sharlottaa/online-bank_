@@ -1,5 +1,6 @@
 package com.example.online_bank.controller;
 
+import com.example.online_bank.entity.Bank;
 import com.example.online_bank.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -10,6 +10,8 @@ import java.util.List;
 import com.example.online_bank.dto.BankAtmDTO;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/atms")
 public class BankAtmController {

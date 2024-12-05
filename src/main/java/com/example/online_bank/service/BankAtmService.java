@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.online_bank.dto.BankAtmDTO;
 
+
 public interface BankAtmService {
     BankAtmDTO createAtm(BankAtmDTO bankAtmDTO);
     BankAtmDTO getAtmById(Long id);

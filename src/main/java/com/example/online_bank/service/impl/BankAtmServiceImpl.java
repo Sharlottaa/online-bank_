@@ -1,5 +1,4 @@
 package com.example.online_bank.service.impl;
-
 import com.example.online_bank.entity.BankAtm;
 import com.example.online_bank.dto.BankAtmDTO;
 import com.example.online_bank.repository.BankAtmRepository;
